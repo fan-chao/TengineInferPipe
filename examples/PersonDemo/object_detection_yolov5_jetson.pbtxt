@@ -45,8 +45,8 @@ node {
   output_stream: "TENSOR_SHAPE:tensor_shapes"
   node_options: {
     [type.googleapis.com/mediapipe.TensorrtInferenceCalculatorOptions] {
-      onnx_path: "/data/fc/tengine/TengineInferPipe/examples/PersonDemo/models/yolov5_pcb.onnx"
-      engine_path: "/data/fc/tengine/TengineInferPipe/examples/PersonDemo/models/yolov5_pcb.te"
+      onnx_path: "../models/yolov5_pcb.onnx"
+      engine_path: "../models/yolov5_pcb.te"
       output_num: 1
     }
   }
@@ -65,7 +65,7 @@ node {
     [type.googleapis.com/mediapipe.TensorrtYolov5TensorsToDetectionsCalculatorOptions] {
       num_classes: 3
       min_score_thresh: 0.5
-	  img_width: 608
+      img_width: 608
       img_height: 608
     }
   }
