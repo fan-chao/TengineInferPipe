@@ -21,7 +21,7 @@
 ### 编译
 
 * 基于[Tengine](https://github.com/OAID/Tengine)的linux下[x86平台](./docs/compile_x86.md)以及[a311d平台](./docs/compile_a311d.md)
-* 基于TensorRT的[Jetson平台](compile_jetson.md)
+* 基于TensorRT的[Jetson平台](./docs/compile_jetson.md)
 
 ### 示例
 
