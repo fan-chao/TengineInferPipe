@@ -15,7 +15,11 @@
 // An example of reading OpenCV video frames into a InferPipe graph
 #include <cstdlib>
 #include "absl/status/status.h"
-#include "inferpipe_tengine.h"
+
+//#include "inferpipe_tengine.h"
+#include "inferpipe_tensorrt.h"
+
+#include <opencv2/highgui/highgui_c.h>
 
 int main(int argc, char** argv) {
 
@@ -24,12 +28,22 @@ int main(int argc, char** argv) {
   color_map.push_back(cv::Scalar(0,0,255));
   color_map.push_back(cv::Scalar(255,0,0));
 
-  InferTenginePipe test_pipe;
+  //InferTenginePipe test_pipe;
+  InferTensorrtPipe test_pipe;
 
-  test_pipe.init_pipe(argv[1],argv[2],argv[3]);
+  auto init_status = test_pipe.init_pipe(argv[1],argv[2],argv[3]);
+  if (!init_status.ok()) {
+      std::cout << "Failed to init pipe: " << init_status.message() << std::endl;
+      return EXIT_FAILURE;
+  }
 
   cv::VideoCapture capture;
   capture.open(argv[4]);
+
+  bool show{ true };
+  const std::string display_name{"jetson"};
+  if (show)
+      cv::namedWindow(display_name, CV_WINDOW_NORMAL);
 
   int frame_num=0;
   while (true) {
@@ -57,9 +71,17 @@ int main(int argc, char** argv) {
       int y1 = static_cast<int>(floor(result[i].y1*height));
       int x2 = static_cast<int>(floor(result[i].x2*width));
       int y2 = static_cast<int>(floor(result[i].y2*height));
+      //printf("x1=%d,y1=%d, x2=%d,y2=%d\n", x1, y1, x2, y2);
+
       cv::rectangle(camera_frame_raw, cv::Point(x1,y1), cv::Point(x2,y2), color_map[result[i].class_id], 2);
     }
-    cv::imwrite("./result_"+std::to_string(frame_num)+".jpg",camera_frame_raw);
+    //cv::imwrite("./result/result_"+std::to_string(frame_num)+".jpg",camera_frame_raw);
+
+    if (show) {
+        cv::imshow(display_name, camera_frame_raw);
+        if (cv::waitKey(1) == 'q') break;
+    }
+
     frame_num ++;
   }
 

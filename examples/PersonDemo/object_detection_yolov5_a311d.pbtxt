@@ -51,7 +51,7 @@ node {
       output_num: 3
       max_dim: 5
       yolov5_focus: true
-      tengine_backend: "timvx"
+      tengine_backend: "cpu"
     }
   }
 }

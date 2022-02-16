@@ -3,7 +3,7 @@
 #include "absl/status/status.h"
 #include "absl/flags/flag.h"
 #include "absl/flags/parse.h"
-#include "mediapipe/calculators/tensorrt/inferpipe_tensorrt.h"
+#include "inferpipe_tensorrt.h"
 #include "mediapipe/framework/calculator_framework.h"
 #include "mediapipe/framework/formats/image_frame.h"
 #include "mediapipe/framework/formats/image_frame_opencv.h"

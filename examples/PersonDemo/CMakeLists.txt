@@ -22,13 +22,17 @@
 # Check CMake version
 CMAKE_MINIMUM_REQUIRED (VERSION 3.10 FATAL_ERROR)
 
+set(INFERPIPE_ROOT_DIR ${CMAKE_CURRENT_SOURCE_DIR}/../..)
+
 project(demo_run_graph_main)
 
-set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -DNDEBUG -O2")
+set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -DDEBUG -g")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++17 -D_REENTRANT -fPIC -Wall")
 
 OPTION (BUILD_ON_AARCH64             "Build example on aarch64 platform"          OFF)
 OPTION (BUILD_ON_A311D               "Build example on a311d platform"            OFF)
-OPTION (USE_OPENCV4                  "Opencv version >= 4.0"            OFF)
+OPTION (USE_OPENCV4                  "Opencv version >= 4.0"            ON)
 
 # macro for adding test
 FUNCTION (PIPE_EXAMPLE name file)
@@ -40,22 +44,25 @@ FUNCTION (PIPE_EXAMPLE name file)
     add_subdirectory(com_google_absl)
 
     TARGET_INCLUDE_DIRECTORIES (${name} PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}")
-    TARGET_INCLUDE_DIRECTORIES (${name} PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/include")
-    TARGET_INCLUDE_DIRECTORIES (${name} PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/tengine/include")
+    TARGET_INCLUDE_DIRECTORIES (${name} PRIVATE "${INFERPIPE_ROOT_DIR}/mediapipe/interface")
+    TARGET_INCLUDE_DIRECTORIES (${name} PRIVATE "${INFERPIPE_ROOT_DIR}/tengine/include")
 
     IF(USE_OPENCV4)
         TARGET_INCLUDE_DIRECTORIES (${name} PRIVATE "/usr/include/opencv4")
     ENDIF()
 
-    TARGET_LINK_LIBRARIES (${name} PRIVATE desktop_tengine_calculators)
+    TARGET_LINK_LIBRARIES (${name} PRIVATE tengine-lite)
+    TARGET_LINK_LIBRARIES (${name} PRIVATE desktop_jetson_calculators)
+    #TARGET_LINK_LIBRARIES (${name} PRIVATE desktop_tengine_calculators)
     TARGET_LINK_LIBRARIES (${name} PRIVATE opencv_highgui opencv_imgproc opencv_core opencv_videoio opencv_imgcodecs)
     TARGET_LINK_LIBRARIES (${name} PRIVATE absl::flags_parse absl::flags_internal absl::flags absl::strings)
 
     INSTALL (TARGETS ${name} DESTINATION bin)
 ENDFUNCTION()
 
-link_directories("${CMAKE_CURRENT_SOURCE_DIR}/libs")
-link_directories("${CMAKE_CURRENT_SOURCE_DIR}/tengine/lib")
+#link_directories("${INFERPIPE_ROOT_DIR}/bazel-bin/mediapipe/examples/desktop/object_detection")
+link_directories("${INFERPIPE_ROOT_DIR}/bazel_build/execroot/mediapipe/bazel-out/aarch64-dbg/bin/mediapipe/examples/desktop/object_detection")
+link_directories("${INFERPIPE_ROOT_DIR}/tengine/lib")
 link_directories("/usr/lib")
     
 IF(BUILD_ON_AARCH64)

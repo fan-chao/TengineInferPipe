@@ -33,8 +33,8 @@ mediapipe_proto_library(
 cc_library(
     name = "tensorrt_inference_calculator",
     srcs = ["tensorrt_inference_calculator.cc"],
+	hdrs = ["common/buffers.h","common/logging.h","common/common.h","common/logger.h","common/half.h",],
     visibility = ["//visibility:public"],
-    hdrs = ["common/buffers.h","common/logging.h","common/common.h","common/logger.h","common/half.h",],
     deps = [
         ":tensorrt_inference_calculator_cc_proto",
         "@com_google_absl//absl/memory",

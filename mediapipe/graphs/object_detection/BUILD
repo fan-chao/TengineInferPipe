@@ -51,7 +51,7 @@ cc_library(
         "//mediapipe/calculators/tensorrt:tensorrt_inference_calculator",
         "//mediapipe/calculators/tensorrt:tensorrt_yolov5_tensors_to_detections_calculator",
         "//mediapipe/calculators/tensorrt:tensorrt_retina_tensors_to_detections_calculator",
-        "//mediapipe/calculators/tensorrt:inferpipe_tensorrt_calculator",
+		"//mediapipe/interface:inferpipe_tensorrt_calculator",
         "//mediapipe/calculators/tensorrt:tensorrt_tensors_to_classification_calculator",
         "//mediapipe/calculators/util:annotation_overlay_calculator",
         "//mediapipe/calculators/util:detection_label_id_to_text_calculator",
