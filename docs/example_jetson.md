@@ -15,17 +15,24 @@
    mkdir libs
    cp <inferpipe-root-dir>/bazel-bin/mediapipe/examples/desktop/object_detection/libdesktop_tengine_calculators.so ./libs/
    ```
+   
+   注意Demo中如果使用trt作为推理后端，需要使用inferpipe_tensorrt.h中的InferTensorrtPipe创建对象。
 
 2. 编译工程
 
    ```
    mkdir build
    cd build
-   cmake -DBUILD_ON_AARCH64=ON -DBUILD_ON_A311D=ON -DUSE_OPENCV4=ON ..
+   cmake ..
    make -j`nproc`
    ```
 
    得到demo_run_detect_main文件用于测试检测
+   
+   如果编译Debug版本使用下列命令：
+   ```
+   cmake -DCMAKE_BUILD_TYPE=Debug ..
+   ```
 
 3. 测试检测示例
 
@@ -39,16 +46,27 @@
 
    例如
 
-   1. retinanet
+   1. yolov5
 
       ```
-      ./demo_run_detect_main ../object_detection_retina_a311d.pbtxt input_frame output_detect ../test.mp4
+      ./demo_run_detect_main ../object_detection_yolov5_jetson.pbtxt input_frame output_detect ../test.mp4
       ```
-
-   2. yolov5
-
+      默认使用FP32推理，如果使用FP16，需要修改配置文件object_detection_yolov5_jetson.pbtxt，将use_fp16字段设置为true。
       ```
-      ./demo_run_detect_main ../object_detection_yolov5_a311d.pbtxt input_frame output_detect ../test.mp4
+      node {
+       calculator: "TensorrtInferenceCalculator"
+       input_stream: "ARRAYS:image_tensor"
+       output_stream: "ARRAYS:detection_tensors"
+       output_stream: "TENSOR_SHAPE:tensor_shapes"
+       node_options: {
+         [type.googleapis.com/mediapipe.TensorrtInferenceCalculatorOptions] {
+         onnx_path: "/data/fc/tengine/TengineInferPipe/examples/PersonDemo/models/yolov5_pcb.onnx"
+         engine_path: "/data/fc/tengine/TengineInferPipe/examples/PersonDemo/models/yolov5_pcb.te"
+         output_num: 1
+	      use_fp16: true
+         }
+        }
+      }      
       ```
 
       
