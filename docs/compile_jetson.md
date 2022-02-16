@@ -10,7 +10,7 @@
 
 #### 编译
 
-<pre><inferpipe-root-dir></pre>表示TengineInferPipe项目根目录
+\<inferpipe-root-dir\>表示TengineInferPipe项目根目录
 
 1. 编译
 
@@ -18,7 +18,7 @@
    mkdir bazel_build
    bazel --output_base=./bazel_build build -c opt --define MEDIAPIPE_DISABLE_GPU=1 mediapipe/examples/desktop/object_detection:libdesktop_jetson_calculators.so
    ```
-   如果编译Debug版本，使用下列命令，将-c opt改为-c dbg，并且调试的时候需要将工作目录指定为<pre><inferpipe-root-dir></pre>。
+   如果编译Debug版本，使用下列命令，将-c opt改为-c dbg，并且调试的时候需要将工作目录指定为\<inferpipe-root-dir\>。
    ```
    bazel --output_base=./bazel_build build -c dbg --define MEDIAPIPE_DISABLE_GPU=1 mediapipe/examples/desktop/object_detection:libdesktop_jetson_calculators.so
    ```
