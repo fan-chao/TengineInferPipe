@@ -45,8 +45,8 @@ node {
   output_stream: "TENSOR_SHAPE:tensor_shapes"
   node_options: {
     [type.googleapis.com/mediapipe.TensorrtInferenceCalculatorOptions] {
-      onnx_path: "../models/yolov5_pcb.onnx"
-      engine_path: "../models/yolov5_pcb.te"
+      onnx_path: "../models/yolov5s.onnx"
+      engine_path: "../models/yolov5s.te"
       output_num: 1
     }
   }
